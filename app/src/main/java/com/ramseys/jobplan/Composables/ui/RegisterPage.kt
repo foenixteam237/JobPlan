@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -23,11 +24,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.ramseys.jobplan.R
 
 
 @Composable
-fun RegisterPage() {
+fun RegisterPage(navController: NavController) {
 
     val image = painterResource(id = R.drawable.img1);
     val usernameValue = remember {
@@ -49,16 +51,8 @@ fun RegisterPage() {
             .fillMaxSize()
             .background(color = Color.White), contentAlignment = Alignment.TopCenter){
             Image(painter = image, contentDescription = null,
-                modifier = Modifier
-                    .border(
-                        width = 1.dp,
-                        color = Color.Blue,
-                        shape = RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
-                    )
-                    .background(
-                        color = Color.Transparent,
-                        shape = RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
-                    )
+                modifier = Modifier.clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
+
             )
         }
         Column(
@@ -120,8 +114,7 @@ fun RegisterPage() {
                        .padding(10.dp)) {
                    Button(
                        onClick = {
-
-                           Toast.makeText(context,"Nom:"+usernameValue.value+" Matricule:"+matValue.value, Toast.LENGTH_SHORT).show()
+                                    navController.navigate("register_screen2")
                                  },
                        modifier = Modifier
                            .width(80.dp)
@@ -150,5 +143,5 @@ fun RegisterPage() {
 @Preview(showBackground = true)
 @Composable
 fun RegisterPagePreview(){
-    RegisterPage()
+    //RegisterPage()
 }
