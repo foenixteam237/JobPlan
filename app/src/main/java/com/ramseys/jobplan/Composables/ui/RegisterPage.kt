@@ -1,26 +1,20 @@
 package com.ramseys.jobplan.Composables.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +22,7 @@ import androidx.navigation.NavController
 import com.ramseys.jobplan.R
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPage(navController: NavController) {
 
@@ -35,7 +30,6 @@ fun RegisterPage(navController: NavController) {
     val usernameValue = remember {
         mutableStateOf("")
     }
-    val context = LocalContext.current;
     val matValue = remember {
         mutableStateOf("")
     }
@@ -45,7 +39,6 @@ fun RegisterPage(navController: NavController) {
 
     val conf = LocalConfiguration.current;
     val width = conf.screenWidthDp.dp;
-    val height = conf.screenHeightDp.dp;
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter){
         Box(modifier = Modifier
             .fillMaxSize()
@@ -119,12 +112,12 @@ fun RegisterPage(navController: NavController) {
                        modifier = Modifier
                            .width(80.dp)
                            .background(
-                               color = MaterialTheme.colors.primary,
+                               color = MaterialTheme.colorScheme.primary,
                                shape = RoundedCornerShape(30.dp)
                            )
                            .border(
                                2.dp,
-                               color = MaterialTheme.colors.primary,
+                               color = MaterialTheme.colorScheme.primary,
                                RoundedCornerShape(30.dp)
                            )
                            .height(50.dp)

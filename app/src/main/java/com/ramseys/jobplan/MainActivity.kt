@@ -6,12 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun navigation(){
     val navController = rememberNavController();
+    val context = LocalContext.current;
     //val image = (id = R.drawable.img1);
     NavHost(
         navController = navController,
@@ -55,7 +57,7 @@ fun navigation(){
             RegisterPage(navController = navController)
         }
         composable("register_screen2"){
-            RegisterPage2()
+            RegisterPage2(context=context)
         }
     }
 }

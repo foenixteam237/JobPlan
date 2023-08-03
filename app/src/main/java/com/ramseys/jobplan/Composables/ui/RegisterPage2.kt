@@ -1,5 +1,7 @@
 package com.ramseys.jobplan.Composables.ui
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,12 +18,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,11 +43,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import com.ramseys.jobplan.HomeScreen
 import com.ramseys.jobplan.R
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterPage2() {
+fun RegisterPage2(context: Context) {
     val phoneNumber = remember {
         mutableStateOf("")
     }
@@ -140,10 +148,13 @@ fun RegisterPage2() {
                     modifier =  Modifier.fillMaxWidth(0.8f)
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                Button(onClick = { /*TODO*/ }, 
+                Button(onClick = {
+                                 val intent = Intent(context, HomeScreen::class.java)
+                                startActivity(context, intent,null)
+                },
                     modifier = Modifier
                         .width(80.dp)
-                        .background(color = MaterialTheme.colors.primary)
+                        .background(color = MaterialTheme.colorScheme.primary)
                         .clip(RoundedCornerShape(30.dp))) {
                     
                     Text(text = "Sign up", fontSize = 10.sp)
@@ -157,5 +168,5 @@ fun RegisterPage2() {
 @Preview(showBackground = true)
 @Composable
 fun RegisterPreview(){
-    RegisterPage2()
+    RegisterPage2(context = LocalContext.current)
 }

@@ -1,21 +1,21 @@
 package com.ramseys.jobplan.ui.theme
 
+import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
-private val DarkColorPalette = darkColors(
+private val DarkColorPalette = darkColorScheme(
         primary = primaryColor,
-        primaryVariant = Purple700,
         secondary = secondaryColor
 )
 
-private val LightColorPalette = lightColors(
+private val LightColorPalette = lightColorScheme(
         primary = primaryColor,
-        primaryVariant = Purple700,
         secondary = secondaryColor
 
         /* Other default colors to override
@@ -37,7 +37,7 @@ fun JOBPLANTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
     }
 
     MaterialTheme(
-            colors = colors,
+            colorScheme = colors,
             typography = Typography,
             shapes = Shapes,
             content = content

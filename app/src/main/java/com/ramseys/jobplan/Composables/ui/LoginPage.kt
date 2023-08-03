@@ -1,15 +1,15 @@
 package com.ramseys.jobplan.Composables.ui
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,13 +25,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
-import com.ramseys.jobplan.navigation
+import com.ramseys.jobplan.HomeScreen
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPage(navController: NavController){
     val image = painterResource(id = com.ramseys.jobplan.R.drawable.image)
@@ -104,19 +105,19 @@ fun LoginPage(navController: NavController){
 
                 Spacer(modifier = Modifier.padding(10.dp))
                 Button(onClick = {
+                            val intent = Intent(context, HomeScreen::class.java)
+                            startActivity(context, intent, null)
 
-                    navController.navigate("register_screen")
-                    Toast.makeText(context, "Width=$width height=$height",Toast.LENGTH_SHORT).show();
-                                 },
+                             },
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
                         .background(
-                            color = MaterialTheme.colors.primary,
+                            color = MaterialTheme.colorScheme.primary,
                             shape = RoundedCornerShape(20.dp)
                         )
                         .border(
                             2.dp,
-                            color = MaterialTheme.colors.primary,
+                            color = MaterialTheme.colorScheme.primary,
                             shape = RoundedCornerShape(20.dp)
                         )
                         .height(50.dp)) {
@@ -127,7 +128,7 @@ fun LoginPage(navController: NavController){
                 Text(text = "Créer un nouveau compte", modifier = Modifier
                     .padding(all = 10.dp)
                     .clickable {
-                        // RegisterPage()
+                        navController.navigate("register_screen")
                     }, color = Color.Blue)
                 Spacer(modifier = Modifier.padding(10.dp))
             }
