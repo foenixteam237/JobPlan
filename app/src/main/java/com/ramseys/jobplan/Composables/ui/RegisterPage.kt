@@ -44,7 +44,7 @@ fun RegisterPage(navController: NavController) {
             .fillMaxSize()
             .background(color = Color.White), contentAlignment = Alignment.TopCenter){
             Image(painter = image, contentDescription = null,
-                modifier = Modifier.clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
+                modifier = Modifier.clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)).width(width)
 
             )
         }

@@ -56,7 +56,8 @@ fun LoginPage(navController: NavController){
             ) {
             Image(painter = image,
                 contentDescription = null,
-                contentScale = ContentScale.FillBounds)
+                modifier = Modifier.width(width).height(height),
+                contentScale = ContentScale.Crop)
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

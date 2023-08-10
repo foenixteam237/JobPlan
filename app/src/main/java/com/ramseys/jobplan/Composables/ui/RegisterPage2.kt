@@ -66,7 +66,6 @@ fun RegisterPage2(context: Context) {
 
     val  conf = LocalConfiguration.current;
     val width = conf.screenWidthDp.dp;
-    
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter){
         Box(
             modifier = Modifier
@@ -74,7 +73,7 @@ fun RegisterPage2(context: Context) {
                 .background(color = Color.White),
             contentAlignment = Alignment.TopCenter
         ) {
-                    Image(painter= painterResource(id = R.drawable.img1) , contentDescription = null,Modifier.clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp)))
+                    Image(painter= painterResource(id = R.drawable.img1) , contentDescription = null,Modifier.width(width).clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp)))
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
