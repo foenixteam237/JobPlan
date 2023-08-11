@@ -51,7 +51,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ramseys.jobplan.Composables.Widget.BarGraph
+import com.ramseys.jobplan.Composables.Widget.BarType
 import com.ramseys.jobplan.ui.theme.JOBPLANTheme
+import com.ramseys.jobplan.ui.theme.Purple500
 import com.ramseys.jobplan.ui.theme.primaryColor
 
 class HomeScreen : ComponentActivity() {
@@ -178,6 +181,7 @@ fun HomeView(name: String, modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .width(width)
                     .height(height)
+                    .padding(10.dp)
                     .shadow(
                         6.dp,
                         shape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
@@ -186,7 +190,23 @@ fun HomeView(name: String, modifier: Modifier = Modifier) {
                         spotColor = Color.Blue
                     )
             ) {
-                MyCanva()
+                val dataList = mutableListOf(30,60,90,50,70)
+                val floatValue = mutableListOf<Float>()
+                val dateList = mutableListOf(2,3,4,5,6)
+                dateList.forEachIndexed{
+                    index, i ->
+                    floatValue.add(index = index, element = i.toFloat()/dateList.max().toFloat())
+                }
+                BarGraph(
+                    graphBarData = floatValue,
+                    xAxisScaleData = dateList,
+                    barData_ =dataList ,
+                    height = 300.dp,
+                    roundType = BarType.TOP_CURVED,
+                    barWidth = 20.dp,
+                    barColor = Purple500,
+                    barArragement =Arrangement.SpaceEvenly
+                )
             }
 
         }
@@ -236,7 +256,7 @@ fun MyCanva(){
     Row(
         modifier = Modifier.then(
             Modifier
-                .width(width-10.dp)
+                .width(width - 10.dp)
                 .height(height / 2)
                 .drawBehind {
                     // draw X-Axis
