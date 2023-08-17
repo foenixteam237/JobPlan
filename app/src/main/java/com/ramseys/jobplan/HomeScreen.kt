@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,10 +40,13 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import android.graphics.Paint
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -56,6 +60,7 @@ import com.ramseys.jobplan.Composables.Widget.BarType
 import com.ramseys.jobplan.ui.theme.JOBPLANTheme
 import com.ramseys.jobplan.ui.theme.Purple500
 import com.ramseys.jobplan.ui.theme.primaryColor
+import kotlin.math.round
 
 class HomeScreen : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -176,23 +181,23 @@ fun HomeView(name: String, modifier: Modifier = Modifier) {
                 Text(text = "Semaine: Du......Au......", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
             Column(
-                verticalArrangement = Arrangement.Bottom,
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .width(width)
-                    .height(height)
+                    .fillMaxWidth()
+                    .fillMaxHeight()
                     .padding(10.dp)
                     .shadow(
-                        6.dp,
+                        2.dp,
                         shape = RoundedCornerShape(topEnd = 30.dp, topStart = 30.dp),
                         clip = false,
                         ambientColor = Color.Blue,
                         spotColor = Color.Blue
                     )
             ) {
-                val dataList = mutableListOf(30,60,90,50,70)
+               /* val dataList = mutableListOf(30,60,90,50,70,10,100)
                 val floatValue = mutableListOf<Float>()
-                val dateList = mutableListOf(2,3,4,5,6)
+                val dateList = mutableListOf(2,20,10,5,1,6,7)
                 dateList.forEachIndexed{
                     index, i ->
                     floatValue.add(index = index, element = i.toFloat()/dateList.max().toFloat())
@@ -201,12 +206,13 @@ fun HomeView(name: String, modifier: Modifier = Modifier) {
                     graphBarData = floatValue,
                     xAxisScaleData = dateList,
                     barData_ =dataList ,
-                    height = 300.dp,
+                    height = height/3,
                     roundType = BarType.TOP_CURVED,
-                    barWidth = 20.dp,
+                    barWidth = width/10+5.dp,
                     barColor = Purple500,
-                    barArragement =Arrangement.SpaceEvenly
-                )
+                    barArrangement =Arrangement.SpaceEvenly
+                )*/
+                MyCanva()
             }
 
         }
@@ -228,13 +234,16 @@ data class StackedData(
 @Composable
 @ReadOnlyComposable
 internal fun stackedBarChartInputs() = (0..6).map {
-    val inputs = (0..2).map { (1..100).random().toFloat() }.toPercent()
+    val inputs = listOf(20f,20f,60f,70f).toPercent()
+
+
     StackedData(
         inputs = inputs,
         colors = listOf(
-            MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.tertiary,
-            MaterialTheme.colorScheme.secondary
+            Color.Green,
+            Color.Blue,
+            Color.Red,
+            Color.DarkGray,
         )
     )
 }
@@ -252,13 +261,22 @@ fun MyCanva(){
     val height = conf.screenHeightDp.dp;
     val borderColor = MaterialTheme.colorScheme.primary
     val density = LocalDensity.current
-    val strokeWidth = with(density) { 1.dp.toPx() }
+    val strokeWidth = with(density) { 2.dp.toPx() }
+    val textPaint = remember {
+        Paint().apply {
+            color = Color.Black.hashCode()
+            textAlign = Paint.Align.CENTER
+            textSize = density.run { 12.sp.toPx() }
+        }
+    }
     Row(
         modifier = Modifier.then(
             Modifier
-                .width(width - 10.dp)
+                .fillMaxWidth()
                 .height(height / 2)
+                .padding(15.dp)
                 .drawBehind {
+
                     // draw X-Axis
                     drawLine(
                         color = borderColor,
@@ -266,6 +284,7 @@ fun MyCanva(){
                         end = Offset(size.width, size.height),
                         strokeWidth = strokeWidth
                     )
+
                     // draw Y-Axis
                     drawLine(
                         color = borderColor,
@@ -273,13 +292,14 @@ fun MyCanva(){
                         end = Offset(0f, size.height),
                         strokeWidth = strokeWidth
                     )
+
                 }
         ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom
     ) {
       stackedBarChartInputs().forEach{
-          stackedData -> Column(modifier = Modifier.weight(1f)) {
+          stackedData -> Column(modifier = Modifier.weight(2f)) {
 
           stackedData.inputs.forEachIndexed { index, input ->
 
@@ -287,12 +307,14 @@ fun MyCanva(){
 
               Spacer(
                   modifier = Modifier
-                      .padding(horizontal = 2.dp)
+                      .padding(horizontal = 5.dp, vertical = 2.dp)
                       .height(itemHeight.dp)
-                      .fillMaxWidth()
+                      .width(width / 10 + 100.dp)
+                      .clip(RoundedCornerShape(10.dp))
                       .background(stackedData.colors[index])
               )
           }
+
       }
       }
     }
