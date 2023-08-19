@@ -10,22 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
 private val DarkColorPalette = darkColorScheme(
-        primary = primaryColor,
-        secondary = secondaryColor
+    primary = primaryColor,
+    secondary = secondaryColor
 )
 
 private val LightColorPalette = lightColorScheme(
-        primary = primaryColor,
-        secondary = secondaryColor
+    primary = primaryColor,
+    secondary = secondaryColor
 
-        /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    /* Other default colors to override
+background = Color.White,
+surface = Color.White,
+onPrimary = Color.White,
+onSecondary = Color.Black,
+onBackground = Color.Black,
+onSurface = Color.Black,
+*/
 )
 
 @Composable
@@ -37,9 +37,9 @@ fun JOBPLANTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
     }
 
     MaterialTheme(
-            colorScheme = colors,
-            typography = Typography,
-            shapes = Shapes,
-            content = content
+        colorScheme = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
     )
 }

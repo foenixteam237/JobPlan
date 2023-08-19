@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.ramseys.jobplan.HomeScreen
+import com.ramseys.jobplan.RegisterPage
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,7 +130,9 @@ fun LoginPage(navController: NavController){
                 Text(text = "Créer un nouveau compte", modifier = Modifier
                     .padding(all = 10.dp)
                     .clickable {
-                        navController.navigate("register_screen")
+                        Toast.makeText(context,"OK",Toast.LENGTH_LONG).show()
+                        val intent = Intent(context, RegisterPage::class.java)
+                        startActivity(context, intent,null )
                     }, color = Color.Blue)
                 Spacer(modifier = Modifier.padding(10.dp))
             }

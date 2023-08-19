@@ -46,6 +46,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -228,23 +229,24 @@ fun GreetingPreview() {
 }
 data class StackedData(
     val inputs: List<Float>,
-    val colors: List<Color>
+    val colors: List<Color>,
+    val names: List<String>
 )
 
 @Composable
 @ReadOnlyComposable
 internal fun stackedBarChartInputs() = (0..6).map {
-    val inputs = listOf(20f,20f,60f,70f).toPercent()
-
+    val inputs = listOf(20f,40f,60f,40f).toPercent()
 
     StackedData(
         inputs = inputs,
         colors = listOf(
+            Color.Red,
             Color.Green,
             Color.Blue,
             Color.Red,
-            Color.DarkGray,
-        )
+        ),
+        names = listOf("ABK","TLK","ADD","AST")
     )
 }
 
@@ -302,17 +304,27 @@ fun MyCanva(){
           stackedData -> Column(modifier = Modifier.weight(2f)) {
 
           stackedData.inputs.forEachIndexed { index, input ->
+              val itemHeight = remember(input) { input * height.value / 200 }
 
-              val itemHeight = remember(input) { input * height.value / 100 }
-
-              Spacer(
+              Column(
                   modifier = Modifier
                       .padding(horizontal = 5.dp, vertical = 2.dp)
                       .height(itemHeight.dp)
                       .width(width / 10 + 100.dp)
                       .clip(RoundedCornerShape(10.dp))
                       .background(stackedData.colors[index])
-              )
+              ,
+                  verticalArrangement = Arrangement.Center,
+                  horizontalAlignment = Alignment.CenterHorizontally
+              ){
+                    Text(text = stackedData.names[index],
+                        color = if (stackedData.colors[index]== Color.Red) Color.White else (if(stackedData.colors[index]==Color.Blue) Color.Green else Color.Black),
+                        style = TextStyle(
+                            fontSize = 8.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                            )
+              }
           }
 
       }

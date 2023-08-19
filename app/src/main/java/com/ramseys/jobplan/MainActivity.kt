@@ -25,14 +25,22 @@ import androidx.navigation.compose.rememberNavController
 import com.ramseys.jobplan.Composables.ui.LoginPage
 import com.ramseys.jobplan.Composables.ui.RegisterPage
 import com.ramseys.jobplan.Composables.ui.RegisterPage2
+import com.ramseys.jobplan.ui.theme.JOBPLANTheme
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         setContent {
-            navigation()
+            JOBPLANTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    navigation()
+                }
+            }
+
         }
     }
 }
@@ -54,7 +62,7 @@ fun navigation(){
           LoginPage(navController = navController)
         }
         composable("register_screen"){
-            RegisterPage(navController = navController)
+            RegisterPage(navController = navController, context)
         }
         composable("register_screen2"){
             RegisterPage2(context=context)
@@ -67,7 +75,6 @@ fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true){
         delay(5000L)
         navController.navigate("login_screen")
-
 
     }
 

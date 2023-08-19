@@ -1,5 +1,12 @@
 package com.ramseys.jobplan.Composables.ui
 
+import android.app.job.JobParameters
+import android.content.Context
+import android.os.Bundle
+import android.os.PersistableBundle
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,12 +26,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.ramseys.jobplan.R
+import com.ramseys.jobplan.navigation
+import com.ramseys.jobplan.ui.theme.JOBPLANTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterPage(navController: NavController) {
+fun RegisterPage(navController: NavController, context: Context) {
 
     val image = painterResource(id = R.drawable.img1);
     val usernameValue = remember {
@@ -39,12 +49,15 @@ fun RegisterPage(navController: NavController) {
 
     val conf = LocalConfiguration.current;
     val width = conf.screenWidthDp.dp;
+    val height = conf.screenHeightDp.dp;
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter){
         Box(modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White), contentAlignment = Alignment.TopCenter){
             Image(painter = image, contentDescription = null,
-                modifier = Modifier.clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)).width(width)
+                modifier = Modifier
+                    .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
+                    .width(width)
 
             )
         }
@@ -107,7 +120,8 @@ fun RegisterPage(navController: NavController) {
                        .padding(10.dp)) {
                    Button(
                        onClick = {
-                                    navController.navigate("register_screen2")
+                                   navController.navigate("register_screen2")
+                                 Toast.makeText(context,"ok", Toast.LENGTH_LONG).show()
                                  },
                        modifier = Modifier
                            .width(80.dp)
