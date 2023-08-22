@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
+import com.ramseys.jobplan.AdminDashBoad
 import com.ramseys.jobplan.HomeScreen
 import com.ramseys.jobplan.RegisterPage
 
@@ -107,8 +108,17 @@ fun LoginPage(navController: NavController){
 
                 Spacer(modifier = Modifier.padding(10.dp))
                 Button(onClick = {
-                            val intent = Intent(context, HomeScreen::class.java)
-                            startActivity(context, intent, null)
+
+
+
+                    if (!(matValue.value == "2022SR" && passwordValue.value == "1234")){
+                        val intent = Intent(context, HomeScreen::class.java)
+                        startActivity(context, intent, null)
+                    }else{
+                        val intent = Intent(context, AdminDashBoad::class.java)
+                        startActivity(context, intent, null)
+                        Toast.makeText(context, "Bienvenue Monsieur", Toast.LENGTH_LONG).show()
+                    }
 
                              },
                     modifier = Modifier

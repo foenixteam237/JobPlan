@@ -7,7 +7,3 @@ enum class BarType {
     TOP_CURVED
 }
 
-@Composable
-fun Canvas(){
-
-}
