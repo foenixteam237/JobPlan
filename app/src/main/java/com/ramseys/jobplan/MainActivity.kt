@@ -76,6 +76,7 @@ fun SplashScreen(navController: NavController) {
         delay(5000L)
         navController.navigate("login_screen")
 
+
     }
 
     Column(

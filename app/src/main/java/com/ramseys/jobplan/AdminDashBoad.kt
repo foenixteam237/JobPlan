@@ -35,12 +35,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ramseys.jobplan.Composables.DataClassRep.DashItem
 import com.ramseys.jobplan.ui.theme.JOBPLANTheme
 
@@ -69,7 +74,46 @@ class AdminDashBoad : ComponentActivity() {
 @Composable
 fun AdminScreen(name: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current;
-    gridView(context = context)
+    val height = LocalConfiguration.current.screenHeightDp.dp
+
+    Box(modifier = Modifier
+        .fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(height / 2)
+                    .shadow(
+                        3.dp,
+                        RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp),
+                        true,
+                        Color.Transparent,
+                        Color.Blue
+                    )
+                    .background(
+                        Color.White,
+                        shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
+                    ),
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.admin_amico),
+                    contentDescription = "Aireport")
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(height / 2)
+            ) {
+                gridView(context = context)
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
@@ -94,10 +138,14 @@ fun gridView(context: Context){
     itemList = itemList + DashItem("Messagerie", Color.Blue, R.drawable.messagerie)
 
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(Color.Transparent)) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier= Modifier.padding(10.dp)
+            modifier= Modifier
+                .padding(10.dp)
+                .background(Color.Transparent)
         ) {
             itemList.forEachIndexed {
                     index, _ ->
@@ -107,18 +155,16 @@ fun gridView(context: Context){
                             Toast.makeText(context, itemList[index].itemName+" selected", Toast.LENGTH_LONG).show()
                         }
                     ,
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .background(Color.Transparent),
+                        shape = RoundedCornerShape(20.dp)
 
                     ) {
                         Column(
                             Modifier
                                 .fillMaxSize()
-                                .padding(5.dp)
-                                .shadow(
-                                    6.dp,
-                                    shape = RoundedCornerShape(30.dp),
-                                    clip = true
-                                ),
+                                .padding(5.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -132,23 +178,30 @@ fun gridView(context: Context){
                             )
                             Spacer(modifier = Modifier.height(9.dp))
 
-                            Row(modifier = Modifier.height(IntrinsicSize.Min)) {
+                            Row(modifier = Modifier
+                                .height(IntrinsicSize.Min)
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                            ) {
                                 Divider(
                                     color = itemList[index].itemColor,
                                     modifier = Modifier
                                         .fillMaxHeight()
-                                        .width(2.dp)
+                                        .width(5.dp)
                                 )
                                 Box(modifier = Modifier
                                     .fillMaxWidth()
                                     .height(30.dp)
-                                    .background(color = Color.White)
-                                    .shadow(
-                                        6.dp,
-                                        shape = RoundedCornerShape(3.dp),
-                                        true,
-                                    )) {
-                                    Text(text = itemList[index].itemName)
+                                    .background(color = Color.White),
+                                    contentAlignment = Alignment.Center
+                                    ) {
+                                    Text(
+                                        text = itemList[index].itemName,
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                    )
                                 }
                             }
 

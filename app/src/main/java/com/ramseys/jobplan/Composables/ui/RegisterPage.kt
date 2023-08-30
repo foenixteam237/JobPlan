@@ -36,7 +36,7 @@ import com.ramseys.jobplan.ui.theme.JOBPLANTheme
 @Composable
 fun RegisterPage(navController: NavController, context: Context) {
 
-    val image = painterResource(id = R.drawable.img1);
+    val image = painterResource(id = R.drawable.profile_interface);
     val usernameValue = remember {
         mutableStateOf("")
     }
@@ -124,7 +124,6 @@ fun RegisterPage(navController: NavController, context: Context) {
                                  Toast.makeText(context,"ok", Toast.LENGTH_LONG).show()
                                  },
                        modifier = Modifier
-                           .width(80.dp)
                            .background(
                                color = MaterialTheme.colorScheme.primary,
                                shape = RoundedCornerShape(30.dp)

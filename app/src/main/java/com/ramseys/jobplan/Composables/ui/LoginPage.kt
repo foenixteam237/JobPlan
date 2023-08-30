@@ -114,6 +114,7 @@ fun LoginPage(navController: NavController){
                     if (!(matValue.value == "2022SR" && passwordValue.value == "1234")){
                         val intent = Intent(context, HomeScreen::class.java)
                         startActivity(context, intent, null)
+
                     }else{
                         val intent = Intent(context, AdminDashBoad::class.java)
                         startActivity(context, intent, null)

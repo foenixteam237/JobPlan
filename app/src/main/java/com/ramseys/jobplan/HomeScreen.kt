@@ -47,21 +47,14 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ramseys.jobplan.Composables.Widget.BarGraph
-import com.ramseys.jobplan.Composables.Widget.BarType
 import com.ramseys.jobplan.ui.theme.JOBPLANTheme
-import com.ramseys.jobplan.ui.theme.Purple500
-import com.ramseys.jobplan.ui.theme.primaryColor
-import kotlin.math.round
 
 class HomeScreen : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)

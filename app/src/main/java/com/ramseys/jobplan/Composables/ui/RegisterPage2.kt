@@ -66,14 +66,14 @@ fun RegisterPage2(context: Context) {
 
     val  conf = LocalConfiguration.current;
     val width = conf.screenWidthDp.dp;
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter){
+    Box(modifier = Modifier.fillMaxSize().padding(10.dp), contentAlignment = Alignment.BottomCenter){
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = Color.White),
             contentAlignment = Alignment.TopCenter
         ) {
-                    Image(painter= painterResource(id = R.drawable.img1) , contentDescription = null,Modifier.width(width).clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp)))
+                    Image(painter= painterResource(id = R.drawable.aircraft_cuate) , contentDescription = null,Modifier.width(width).clip(RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp)))
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -152,9 +152,17 @@ fun RegisterPage2(context: Context) {
                                 startActivity(context, intent,null)
                 },
                     modifier = Modifier
-                        .width(80.dp)
-                        .background(color = MaterialTheme.colorScheme.primary)
-                        .clip(RoundedCornerShape(30.dp))) {
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(30.dp)
+                        )
+                        .border(
+                            2.dp,
+                            color = MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(30.dp)
+                        )
+                        .height(50.dp)
+                ) {
                     
                     Text(text = "Sign up", fontSize = 10.sp)
                 }
