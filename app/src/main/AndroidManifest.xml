@@ -13,6 +13,11 @@
         android:theme="@style/Theme.JOBPLAN"
         tools:targetApi="31">
         <activity
+            android:name=".OptionDisplay"
+            android:exported="false"
+            android:label="@string/title_activity_option_display"
+            android:theme="@style/Theme.JOBPLAN" />
+        <activity
             android:name=".AdminDashBoad"
             android:exported="false"
             android:label="@string/title_activity_admin_dash_boad"

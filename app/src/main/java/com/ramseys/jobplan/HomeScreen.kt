@@ -3,7 +3,6 @@ package com.ramseys.jobplan
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,12 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -41,23 +35,24 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import android.graphics.Paint
-import androidx.compose.ui.graphics.nativeCanvas
+import android.widget.Toast
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.IconButton
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ramseys.jobplan.ui.theme.JOBPLANTheme
 
 class HomeScreen : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,6 +62,7 @@ class HomeScreen : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
                     HomeView("ABAKAR")
                 }
             }
@@ -79,6 +75,9 @@ fun HomeView(name: String, modifier: Modifier = Modifier) {
     val conf = LocalConfiguration.current;
     val height = conf.screenHeightDp.dp;
     val width = conf.screenWidthDp.dp;
+    val mContext = LocalContext.current
+
+
 
     var mExpanded by remember {
         mutableStateOf(false)
@@ -135,6 +134,7 @@ fun HomeView(name: String, modifier: Modifier = Modifier) {
                 Column( horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
 
                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End){
+                       
                        Icon(painter = painterResource(id = R.drawable.baseline_chat_bubble_24),
                            contentDescription = null,
                            modifier = Modifier
@@ -142,7 +142,24 @@ fun HomeView(name: String, modifier: Modifier = Modifier) {
                            tint = Color.Black
                        )
                        Spacer(modifier = Modifier.padding(5.dp))
-                       Icon(painter = painterResource(id = R.drawable.baseline_more_vert_24), contentDescription = null, modifier = Modifier.height(30.dp), tint = Color.Black)
+                       IconButton(onClick = { 
+                           mExpanded = !mExpanded
+                       }) {
+                           Icon(
+                               painter = painterResource(id = R.drawable.baseline_more_vert_24),
+                               contentDescription = null,
+                               modifier = Modifier.height(30.dp),
+                               tint = Color.Black)
+                       }
+                       DropdownMenu(expanded = mExpanded,
+                           onDismissRequest = { mExpanded = false })
+                       {
+                           DropdownMenuItem( text = { Text(text = "Profil")},onClick = { Toast.makeText(mContext, "Profil", Toast.LENGTH_SHORT).show() })
+                           DropdownMenuItem( text = { Text(text = "Absence")},onClick = { Toast.makeText(mContext, "Absence", Toast.LENGTH_SHORT).show() })
+                           DropdownMenuItem( text = { Text(text = "Déconnecte")},onClick = { Toast.makeText(mContext, "Logout", Toast.LENGTH_SHORT).show() })
+                           DropdownMenuItem( text = { Text(text = "Décompte Horaire")},onClick = { Toast.makeText(mContext, "Decompte Horaire", Toast.LENGTH_SHORT).show() })
+                       }
+                      
 
                    }
 
@@ -239,7 +256,7 @@ internal fun stackedBarChartInputs() = (0..6).map {
             Color.Blue,
             Color.Red,
         ),
-        names = listOf("ABK","TLK","ADD","AST")
+        names = listOf("ABK","TLK \n ADD \n ABK","ADD","AST")
     )
 }
 
@@ -255,15 +272,11 @@ fun MyCanva(){
     val width = conf.screenWidthDp.dp;
     val height = conf.screenHeightDp.dp;
     val borderColor = MaterialTheme.colorScheme.primary
+
     val density = LocalDensity.current
+
     val strokeWidth = with(density) { 2.dp.toPx() }
-    val textPaint = remember {
-        Paint().apply {
-            color = Color.Black.hashCode()
-            textAlign = Paint.Align.CENTER
-            textSize = density.run { 12.sp.toPx() }
-        }
-    }
+
     Row(
         modifier = Modifier.then(
             Modifier
@@ -324,121 +337,4 @@ fun MyCanva(){
       }
     }
 
-}
-
-@Composable fun <T> Table(
-    columnCount: Int,
-    cellWidth: (index: Int) -> Dp,
-    data: List<T>,
-    modifier: Modifier = Modifier,
-    headerCellContent: @Composable (index:Int)-> Unit,
-    cellContent:@Composable (index: Int, item: T)->Unit
-    ){
-    val conf = LocalConfiguration.current;
-    val width = conf.screenWidthDp.dp;
-    val height = conf.screenHeightDp.dp;
-    Surface(
-        modifier = modifier
-            .width(width)
-            .height(height / 2)
-            .padding(10.dp)
-    ) {
-        LazyRow(modifier = Modifier
-            .padding(16.dp)
-            .width(width)){
-            items((0 until columnCount).toList()){
-                columnIndex->
-                Column {
-                    (0..data.size).forEach{
-                        index->
-                        Surface(
-                            border = BorderStroke(1.dp, Color.LightGray),
-                            contentColor = Color.Black,
-                            modifier = Modifier.width(cellWidth(columnIndex))
-                        ) {
-                            if (index == 0){
-                                headerCellContent(columnIndex)
-                            }else{
-                                cellContent(columnIndex, data[index-1])
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun Table(){
-    class Person {
-        var name: String
-        var age: Int
-        var status: Boolean
-        var email: String
-        constructor(name: String, age: Int, status: Boolean, email: String){
-            this.name = name
-            this.age = age
-            this.email = email
-            this.status = status
-        }
-    }
-    val people = listOf(
-        Person("Alex",21,false,"alex@yahoo.fr"),
-        Person("Toukam", 20, true, "toukamngamini@gmail.com"),
-        Person("ATOH BARGA",19,false, "atoh@gmail.com")
-    )
-    val cellWidth:(Int)->Dp={
-        index->when(index){
-            2->50.dp
-            3->50.dp
-            else -> 50.dp
-        }
-    }
-    val headerCellTitle: @Composable (Int) -> Unit = { index ->
-        val value = when (index) {
-            0 -> "Name"
-            1 -> "Age"
-            2 -> "Has driving license"
-            3 -> "Email"
-            else -> ""
-        }
-
-        Text(
-            text = value,
-            fontSize = 15.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(16.dp),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            fontWeight = FontWeight.Black
-        )
-    }
-    val cellText: @Composable (Int, Person) -> Unit = { index, item ->
-        val value = when (index) {
-            0 -> item.name
-            1 -> item.age.toString()
-            2 -> if (item.status) "YES" else "NO"
-            3 -> item.email
-            else -> ""
-        }
-
-        Text(
-            text = value,
-            fontSize = 10.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(16.dp),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-    }
-
-    Table(
-        columnCount = 7,
-        cellWidth = cellWidth,
-        data = people,
-        modifier = Modifier.verticalScroll(rememberScrollState()),
-        headerCellContent = headerCellTitle,
-        cellContent = cellText
-    )
 }

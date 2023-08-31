@@ -6,5 +6,6 @@ data class DashItem(
 
     val itemName: String,
     val itemColor: Color,
-    val illustration: Int
+    val illustration: Int,
+    val code: String
 )

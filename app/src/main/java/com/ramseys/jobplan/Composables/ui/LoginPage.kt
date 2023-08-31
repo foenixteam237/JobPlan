@@ -1,5 +1,6 @@
 package com.ramseys.jobplan.Composables.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -31,6 +32,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.ramseys.jobplan.AdminDashBoad
 import com.ramseys.jobplan.HomeScreen
+import com.ramseys.jobplan.MainActivity
 import com.ramseys.jobplan.RegisterPage
 
 
@@ -44,6 +46,10 @@ fun LoginPage(navController: NavController){
         mutableStateOf("")
     }
     val conf = LocalConfiguration.current
+
+    val activity = (context as? Activity)
+
+
     val passwordVisibility = remember {
         mutableStateOf(false)
     }
@@ -114,11 +120,13 @@ fun LoginPage(navController: NavController){
                     if (!(matValue.value == "2022SR" && passwordValue.value == "1234")){
                         val intent = Intent(context, HomeScreen::class.java)
                         startActivity(context, intent, null)
+                        activity?.finish()
 
                     }else{
                         val intent = Intent(context, AdminDashBoad::class.java)
                         startActivity(context, intent, null)
                         Toast.makeText(context, "Bienvenue Monsieur", Toast.LENGTH_LONG).show()
+                        activity?.finish()
                     }
 
                              },
