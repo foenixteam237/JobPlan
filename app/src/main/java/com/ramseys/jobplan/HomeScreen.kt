@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ramseys.jobplan.Composables.Widget.MyCanva
 import com.ramseys.jobplan.ui.theme.JOBPLANTheme
 
 class HomeScreen : ComponentActivity() {
@@ -236,105 +237,4 @@ fun GreetingPreview() {
     JOBPLANTheme {
         HomeView("ABAKAR")
     }
-}
-data class StackedData(
-    val inputs: List<Float>,
-    val colors: List<Color>,
-    val names: List<String>
-)
-
-@Composable
-@ReadOnlyComposable
-internal fun stackedBarChartInputs() = (0..6).map {
-    val inputs = listOf(20f,40f,60f,40f).toPercent()
-
-    StackedData(
-        inputs = inputs,
-        colors = listOf(
-            Color.Red,
-            Color.Green,
-            Color.Blue,
-            Color.Red,
-        ),
-        names = listOf("ABK","TLK \n ADD \n ABK","ADD","AST")
-    )
-}
-
-private fun List<Float>.toPercent(): List<Float> {
-    return this.map { item ->
-        item * 100 / this.sum()
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun MyCanva(){
-    val conf = LocalConfiguration.current;
-    val width = conf.screenWidthDp.dp;
-    val height = conf.screenHeightDp.dp;
-    val borderColor = MaterialTheme.colorScheme.primary
-
-    val density = LocalDensity.current
-
-    val strokeWidth = with(density) { 2.dp.toPx() }
-
-    Row(
-        modifier = Modifier.then(
-            Modifier
-                .fillMaxWidth()
-                .height(height / 2)
-                .padding(15.dp)
-                .drawBehind {
-
-                    // draw X-Axis
-                    drawLine(
-                        color = borderColor,
-                        start = Offset(0f, size.height),
-                        end = Offset(size.width, size.height),
-                        strokeWidth = strokeWidth
-                    )
-
-                    // draw Y-Axis
-                    drawLine(
-                        color = borderColor,
-                        start = Offset(0f, 0f),
-                        end = Offset(0f, size.height),
-                        strokeWidth = strokeWidth
-                    )
-
-                }
-        ),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Bottom
-    ) {
-      stackedBarChartInputs().forEach{
-          stackedData -> Column(modifier = Modifier.weight(2f)) {
-
-          stackedData.inputs.forEachIndexed { index, input ->
-              val itemHeight = remember(input) { input * height.value / 200 }
-
-              Column(
-                  modifier = Modifier
-                      .padding(horizontal = 5.dp, vertical = 2.dp)
-                      .height(itemHeight.dp)
-                      .width(width / 10 + 100.dp)
-                      .clip(RoundedCornerShape(10.dp))
-                      .background(stackedData.colors[index])
-              ,
-                  verticalArrangement = Arrangement.Center,
-                  horizontalAlignment = Alignment.CenterHorizontally
-              ){
-                    Text(text = stackedData.names[index],
-                        color = if (stackedData.colors[index]== Color.Red) Color.White else (if(stackedData.colors[index]==Color.Blue) Color.Green else Color.Black),
-                        style = TextStyle(
-                            fontSize = 8.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                            )
-              }
-          }
-
-      }
-      }
-    }
-
 }
