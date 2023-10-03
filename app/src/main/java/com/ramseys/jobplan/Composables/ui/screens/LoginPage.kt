@@ -1,4 +1,4 @@
-package com.ramseys.jobplan.Composables.ui
+package com.ramseys.jobplan.Composables.ui.screens
 
 import android.app.Activity
 import android.content.Intent
@@ -12,8 +12,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,18 +27,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
-import com.ramseys.jobplan.AdminDashBoad
+import com.ramseys.jobplan.Composables.ui.AdminDashBoad
+import com.ramseys.jobplan.Composables.ui.HomeScreen
 import com.ramseys.jobplan.Data.Controlleur.ApiClient
 import com.ramseys.jobplan.Data.Controlleur.SessionManager
 import com.ramseys.jobplan.Data.Request.LoginRequest
 import com.ramseys.jobplan.Data.Request.LoginResponse
-import com.ramseys.jobplan.HomeScreen
-import com.ramseys.jobplan.MainActivity
 import com.ramseys.jobplan.RegisterPage
 import retrofit2.Call
 import retrofit2.Callback
@@ -58,9 +58,7 @@ fun LoginPage(navController: NavController) {
     }
     val conf = LocalConfiguration.current
 
-    val activity = (context as? Activity)
-
-
+    var isLoading by remember { mutableStateOf(false) }
     val passwordVisibility = remember {
         mutableStateOf(false)
     }
@@ -117,7 +115,8 @@ fun LoginPage(navController: NavController) {
                     label = { Text(text = "Matricule") },
                     placeholder = { Text(text = "Matricule") },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.8f)
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    readOnly = isLoading
                 )
 
                 OutlinedTextField(
@@ -139,13 +138,14 @@ fun LoginPage(navController: NavController) {
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth(0.8f)
+                    modifier = Modifier.fillMaxWidth(0.8f),
+                    readOnly = isLoading
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))
                 Button(
                     onClick = {
-
+                        isLoading = true
                         if (!matValue.value.isEmpty() && !passwordValue.value.isEmpty()) {
                             val intent1 = Intent(context, AdminDashBoad::class.java)
                             val intent = Intent(context, HomeScreen::class.java)
@@ -162,6 +162,7 @@ fun LoginPage(navController: NavController) {
                                             call: Call<LoginResponse>,
                                             t: Throwable
                                         ) {
+                                            isLoading = false
                                             Toast.makeText(
                                                 context,
                                                 "Une erreur s'est produit cause: " + t.message,
@@ -176,36 +177,66 @@ fun LoginPage(navController: NavController) {
                                             val loginResponse = response.body()
 
                                             if (loginResponse?.status == 201 && loginResponse?.user != null) {
-                                                if (loginResponse.user.role.roleName == "Agent") {
+                                                isLoading = false
+                                                if (loginResponse.user.status == 0) {
                                                     Toast.makeText(
                                                         context,
-                                                        "Connecté!",
+                                                        "Votre compte n'a pas été activé veuillez vous rapprochez de votre chef d'unité " + loginResponse.user.status+" "+loginResponse.user.registrationNumber,
                                                         Toast.LENGTH_LONG
                                                     ).show()
-                                                    startActivity(context, intent, null)
                                                 } else {
-                                                    Toast.makeText(
-                                                        context,
-                                                        "Connecté! \n Bienvenue!",
-                                                        Toast.LENGTH_LONG
-                                                    ).show()
-                                                    startActivity(context, intent1, null)
+
+                                                    if (loginResponse.user.role.roleName == "Agent") {
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Connecté!",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                        val user = loginResponse?.user
+                                                        intent.putExtra("user", user)
+                                                        startActivity(context, intent, null)
+
+
+                                                    } else {
+                                                        Toast.makeText(
+                                                            context,
+                                                            "Connecté! \n Bienvenue!",
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                        val user = loginResponse?.user
+                                                        intent1.putExtra("user", user)
+                                                        startActivity(context, intent1, null)
+                                                    }
                                                 }
+                                            } else {
+                                                isLoading = false
+                                                Toast.makeText(
+                                                    context,
+                                                    "Matricule ou mot de passe incorrect",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
                                             }
                                         }
                                     })
-                            } else Toast.makeText(
+                            } else {
+                                isLoading = false
+                                Toast.makeText(
+                                    context,
+                                    "La longueur du mot de passe doit etre superieur à 7",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
+                            isLoading = false
+                            Toast.makeText(
                                 context,
-                                "La longueur du mot de passe doit etre superieur à 7",
+                                "Veuillez renseigner les champs",
                                 Toast.LENGTH_SHORT
                             ).show()
-                        } else Toast.makeText(
-                            context,
-                            "Veuillez renseigner les champs",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        }
 
                     },
+                    enabled = !isLoading,
                     modifier = Modifier
                         .fillMaxWidth(0.8f)
                         .background(
@@ -223,21 +254,24 @@ fun LoginPage(navController: NavController) {
                 }
 
                 Spacer(modifier = Modifier.padding(10.dp))
-                Text(text = "Créer un nouveau compte", modifier = Modifier
-                    .padding(all = 10.dp)
-                    .clickable {
-                        Toast
-                            .makeText(context, "OK", Toast.LENGTH_LONG)
-                            .show()
-                        val intent = Intent(context, RegisterPage::class.java)
-                        startActivity(context, intent, null)
-                    }, color = Color.Blue
+                Text(
+                    text = "Créer un nouveau compte", modifier = Modifier
+                        .padding(all = 10.dp)
+                        .clickable {
+                            Toast
+                                .makeText(context, "OK", Toast.LENGTH_LONG)
+                                .show()
+                            val intent = Intent(context, RegisterPage::class.java)
+                            startActivity(context, intent, null)
+                        }, color = Color.Blue
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
             }
 
         }
-
+        if (isLoading) {
+            CircularProgressIndicator()
+        }
     }
 
 }

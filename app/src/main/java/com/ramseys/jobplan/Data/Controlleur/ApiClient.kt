@@ -1,6 +1,8 @@
 package com.ramseys.jobplan.Data.Controlleur
 
+import android.content.Context
 import com.ramseys.jobplan.Data.RetrofitAPI
+import okhttp3.OkHttpClient
 
 class ApiClient {
 
@@ -14,5 +16,12 @@ class ApiClient {
         }
 
         return apiService
+    }
+
+    private  fun okhttpClient(context: Context): OkHttpClient{
+
+        return  OkHttpClient.Builder()
+            .addInterceptor(AuthorizationInterceptor(context))
+            .build()
     }
 }

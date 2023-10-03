@@ -7,4 +7,8 @@
     <string name="title_activity_login_page">LoginPage</string>
     <string name="title_activity_admin_dash_boad">AdminDashBoad</string>
     <string name="title_activity_option_display">OptionDisplay</string>
+    <string name="title_activity_planning_set">PlanningSet</string>
+    <string name="title_activity_chat_screen">ChatScreen</string>
+    <string name="title_activity_conversation">Conversation</string>
+    <string name="title_activity_user_profile">UserProfile</string>
 </resources>

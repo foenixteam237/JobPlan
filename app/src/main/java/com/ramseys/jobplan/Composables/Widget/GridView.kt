@@ -2,7 +2,9 @@ package com.ramseys.jobplan.Composables.Widget
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,39 +36,51 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.compose.rememberNavController
 import com.ramseys.jobplan.Composables.DataClassRep.DashItem
-import com.ramseys.jobplan.HomeScreen
-import com.ramseys.jobplan.OptionDisplay
+import com.ramseys.jobplan.Composables.ui.screens.OptionDisplay
+import com.ramseys.jobplan.Composables.ui.screens.RegisterPage
+import com.ramseys.jobplan.Navigation
+import com.ramseys.jobplan.RegisterPage
+import com.ramseys.jobplan.data.Model.UserItem
 
 
+@RequiresApi(value = 24)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun gridView(context: Context, itemList: List<DashItem>){
+fun gridView(context: Context, itemList: List<DashItem>, user: UserItem?) {
 
+    val navController = rememberNavController();
 
-
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.Transparent)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Transparent)
+    ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier= Modifier
+            modifier = Modifier
                 .padding(10.dp)
                 .background(Color.Transparent)
         ) {
-            itemList.forEachIndexed {
-                    index, _ ->
-                item{
+            itemList.forEachIndexed { index, _ ->
+                item {
                     Card(
                         onClick = {
-                            Toast.makeText(context, itemList[index].itemName+" selected", Toast.LENGTH_LONG).show()
-                            val intent = Intent(context, OptionDisplay::class.java)
-                            intent.putExtra("code", itemList[index].code)
-                            startActivity(context, intent, null)
-                        }
-                        ,
+
+                            if (itemList[index].code == "AA") {
+                                val intent = Intent(context, RegisterPage::class.java)
+                                startActivity(context, intent, null)
+                            } else {
+                                Toast.makeText(context, itemList[index].code, Toast.LENGTH_LONG).show()
+                                val intent = Intent(context, OptionDisplay::class.java)
+                                intent.putExtra("user", user)
+                                intent.putExtra("code", itemList[index].code)
+                                startActivity(context, intent, null)
+                            }
+
+                        },
                         modifier = Modifier
                             .padding(8.dp)
                             .background(Color.Transparent),
@@ -90,10 +104,11 @@ fun gridView(context: Context, itemList: List<DashItem>){
                             )
                             Spacer(modifier = Modifier.height(9.dp))
 
-                            Row(modifier = Modifier
-                                .height(IntrinsicSize.Min)
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(10.dp))
+                            Row(
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(10.dp))
                             ) {
                                 Divider(
                                     color = itemList[index].itemColor,
@@ -101,10 +116,11 @@ fun gridView(context: Context, itemList: List<DashItem>){
                                         .fillMaxHeight()
                                         .width(5.dp)
                                 )
-                                Box(modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(30.dp)
-                                    .background(color = Color.White),
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(30.dp)
+                                        .background(color = Color.White),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(

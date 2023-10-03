@@ -1,4 +1,4 @@
-package com.ramseys.jobplan
+package com.ramseys.jobplan.Composables.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,11 +9,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.ramseys.jobplan.Composables.ui.ListTableau
-import com.ramseys.jobplan.ui.theme.JOBPLANTheme
+import com.ramseys.jobplan.Composables.getWorkplaceUsers
+import com.ramseys.jobplan.Composables.ui.screens.Profile
+import com.ramseys.jobplan.Composables.ui.ui.theme.JOBPLANTheme
+import com.ramseys.jobplan.data.Model.UserItem
 
-class OptionDisplay : ComponentActivity() {
+class UserProfile : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -23,14 +26,9 @@ class OptionDisplay : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    when(val extra = intent.extras?.getString("code")){
-                        "TS"-> ListTableau()
-                        "SLI"-> Greeting(name = "SLI")
-                        "ENM"-> Greeting(name = "ENM")
-                        else ->{
-                            Greeting(name = "$extra est vide")
-                        }
-                    }
+                    val user = intent.getSerializableExtra("user") as UserItem
+                    Profile(user)
+
                 }
             }
         }
@@ -38,9 +36,7 @@ class OptionDisplay : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-
-
+fun Greeting2(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
         modifier = modifier
@@ -49,8 +45,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview3() {
+fun GreetingPreview2() {
     JOBPLANTheme {
-        Greeting("Android")
+        Greeting2("Android")
     }
 }

@@ -1,9 +1,10 @@
 package com.ramseys.jobplan
 
+import android.os.Build
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -22,13 +23,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ramseys.jobplan.Composables.ui.LoginPage
-import com.ramseys.jobplan.Composables.ui.RegisterPage
-import com.ramseys.jobplan.Composables.ui.RegisterPage2
+import com.ramseys.jobplan.Composables.ui.screens.LoginPage
 import com.ramseys.jobplan.ui.theme.JOBPLANTheme
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -44,12 +44,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@RequiresApi(Build.VERSION_CODES.N)
 @Preview
 @Composable
 fun navigation(){
     val navController = rememberNavController();
     val context = LocalContext.current;
-    //val image = (id = R.drawable.img1);
     NavHost(
         navController = navController,
         startDestination = "splash_screen"
@@ -61,12 +61,7 @@ fun navigation(){
         composable("login_screen"){
           LoginPage(navController = navController)
         }
-        composable("register_screen"){
-            RegisterPage(navController = navController, context)
-        }
-        composable("register_screen2"){
-            RegisterPage2(context=context)
-        }
+
     }
 }
 
@@ -76,15 +71,14 @@ fun SplashScreen(navController: NavController) {
         delay(5000L)
         navController.navigate("login_screen")
 
-
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(Color.White),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-            Image(painter = painterResource(id = R.drawable.asecna_logo), contentDescription = "",
+            Image(painter = painterResource(id = R.drawable.logo5), contentDescription = "",
                 modifier = Modifier
                     .width(200.dp)
                     .height(200.dp)
@@ -96,6 +90,6 @@ fun SplashScreen(navController: NavController) {
                     Text(text = "JOB", fontSize = 40.sp, fontWeight = FontWeight.Bold, color = Color.Blue)
                     Text(text = "PLAN", fontSize = 40.sp, fontWeight = FontWeight.Bold, color = Color.Cyan)
                 }
-            Text(text = "-Tableau de service Horaire-", fontSize = 14.sp, fontWeight = FontWeight.Thin, color = Color.Blue)
+            Text(text = "-Tableau de service et Décompte Horaire-", fontSize = 14.sp, fontWeight = FontWeight.Thin, color = Color.Blue)
     }
 }

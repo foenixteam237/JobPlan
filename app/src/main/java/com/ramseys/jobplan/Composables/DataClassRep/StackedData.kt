@@ -5,5 +5,5 @@ import androidx.compose.ui.graphics.Color
 data class StackedData(
     val inputs: List<Float>,
     val colors: List<Color>,
-    val names: List<String>
+    var names: List<List<String?>>
 )
